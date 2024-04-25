@@ -7,17 +7,20 @@ interface IProps {
     children: ReactNode, 
     type?: string, 
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
+
+    mg?: number;
+    del?: boolean;
     light?: boolean;
 }
 
-export default function Button({ children, type, onClick, light }: IProps) {
+export default function Button({ children, type, onClick, light, mg=0, del=false }: IProps) {
 
 
     const { theme } = useSelector((rootReducer: IRootReducer) => rootReducer.useTheme)
 
     return (
         <>
-            <Styled.Button bglight={theme ?  "light" : "dark" } type={type === "button" || type ===  "submit" || type ===  "reset"  ? type : "button" } onClick={onClick} light={light ? "light" : ""} >
+            <Styled.Button del={del} mg={mg} bglight={theme ?  "light" : "dark" } type={type === "button" || type ===  "submit" || type ===  "reset"  ? type : "button" } onClick={onClick} light={light ? light : false} >
                 {children}
             </Styled.Button>
 

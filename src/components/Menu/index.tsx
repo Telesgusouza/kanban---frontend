@@ -25,8 +25,65 @@ import base_url from '../../Config/BaseUrl';
 import { toast } from 'react-toastify';
 import AddBoard from '../AddBoard';
 import EditBoard from '../EditBoard';
+import SectionDelete from '../SectionDelete';
 
 export default function Menu() {
+
+    /*
+    
+    parece ser um problema no backend
+    cors
+    @Configuration
+public class CorsConfig implements WebMvcConfigurer {
+
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**").allowedOrigins("*") // Ou especifique os domínios permitidos separados por vírgula
+				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH").allowedHeaders("*");
+	}
+
+    service
+    
+@Service
+public class BoardService {
+
+	@Autowired
+	private UserRepository repoUser;
+	@Autowired
+	private BoardRepository repoBoard;
+
+	public void delete(UUID id) {
+		
+		try {
+			this.repoBoard.deleteById(id);
+		} catch (RuntimeException e) {
+			throw new RuntimeException();
+		}
+	}
+
+}
+
+controller
+
+@RestController
+@RequestMapping("/api/v1/boards")
+public class BoardController {
+
+	@Autowired
+	private BoardService repo;
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteBoard(@PathVariable UUID id) {
+
+		repo.delete(id);
+
+		return ResponseEntity.noContent().build();
+	}
+
+
+
+    
+    */
 
     const { theme } = useSelector((rootReducer: IRootReducer) => rootReducer.useTheme);
     const dispatch = useDispatch();
@@ -36,7 +93,8 @@ export default function Menu() {
     const [toggleMenu, setToggleMenu] = useState<boolean>(false);
 
     const [toggleAdd, setToggleAdd] = useState<boolean>(false);
-    const [toggleEditBoard, setToggleEditBoard] = useState<boolean>(true);
+    const [toggleEditBoard, setToggleEditBoard] = useState<boolean>(false);
+    const [toggleDeleteBoard, setToggleDeleteBoard] = useState<boolean>(false);
     const [currentBoard, setCurrentBoard] = useState<IBoard>();
 
     useEffect(() => {
@@ -68,8 +126,17 @@ export default function Menu() {
 
     }, [])
 
-    async function handleBoard(board: string) {
-        setBoard(board);
+    async function handleBoard(boardValue: IBoard) {
+        
+        if (board === boardValue.name) {
+            setToggleEditBoard(false);
+            openEditBoard(boardValue); 
+        } else {
+            setToggleDeleteBoard(false);
+            setBoard(boardValue.name);
+        }
+
+
     }
 
     function handleTheme() {
@@ -82,6 +149,7 @@ export default function Menu() {
     function closeBoard() {
         setToggleAdd(false);
         setToggleEditBoard(false);
+        setToggleDeleteBoard(false);
         return null;
     }
 
@@ -90,33 +158,54 @@ export default function Menu() {
         setToggleEditBoard(true);
     }
 
+    function deleteBoard() {
+        setToggleEditBoard(false);
+        setToggleDeleteBoard(true);
+    }
+
     return (
         <>
             {toggleAdd && (
-                <Styled.ContainerAdd>
-                    <Styled.ImgClose> 
-                        <img src={closeImg} alt="fechar" onClick={() => closeBoard()} />
-                    </Styled.ImgClose>
-                    
-                    <AddBoard closeBoard={() => closeBoard()} />
-
-                </Styled.ContainerAdd>
-            )}
-        
-            { toggleEditBoard && currentBoard && (
-                <Styled.ContainerAdd>
+                <Styled.ContainerToggle>
                     <Styled.ContainerButton>
-                        <Styled.ButtonClose> apagar board </Styled.ButtonClose>
                         <Styled.ImgClose> 
                             <img src={closeImg} alt="fechar" onClick={() => closeBoard()} />
                         </Styled.ImgClose>
                     </Styled.ContainerButton>
+                    
+                    <AddBoard closeBoard={() => closeBoard()} />
+
+                </Styled.ContainerToggle>
+            )}
+        
+            { toggleEditBoard && currentBoard && (
+                <Styled.ContainerToggle>
+
+                    <Styled.ContainerButton>
+                        <Styled.ButtonClose onClick={deleteBoard} > apagar board </Styled.ButtonClose>
+                    
+                        <Styled.ImgClose> 
+                            <img src={closeImg} alt="fechar" onClick={() => closeBoard()} />
+                        </Styled.ImgClose>
+                    
+                    </Styled.ContainerButton>
                                 
                     <EditBoard closeBoard={() => closeBoard()} board={currentBoard} />
             
-                </Styled.ContainerAdd>
+                </Styled.ContainerToggle>
             )}
 
+            {toggleDeleteBoard && currentBoard && (
+                <Styled.ContainerToggle>
+                    <Styled.ContainerButton>
+                        <Styled.ImgClose> 
+                            <img src={closeImg} alt="fechar" onClick={() => closeBoard()} />
+                        </Styled.ImgClose>
+                    </Styled.ContainerButton>
+
+                    <SectionDelete closeBoard={() => closeBoard()} board={currentBoard} />
+                </Styled.ContainerToggle>
+            )}
 
             <Styled.Container>
                 <Styled.ContentMenu theme={theme ? themeJson.white : themeJson.darkGray } togglemenu={toggleMenu ? "visible" : ""} >
@@ -127,13 +216,12 @@ export default function Menu() {
                         <strong>Todos boards ({listBoard.length})</strong>
 
                         <ul>
-                            {listBoard.length > 0 && listBoard.map(resp => <Styled.Li key={resp.id} option={board == resp.name ? "select" : ""} onClick={() => handleBoard(resp.name)} >
-
-                            
-                            <img onClick={() => openEditBoard(resp)} src={board == resp.name ? boardLightImg : boardImg} alt='icone board' />
-
-                            {resp.name}
-                            </Styled.Li>)}
+                            {listBoard.length > 0 && listBoard.map(resp => 
+                                <Styled.Li key={resp.id} option={board == resp.name ? "select" : ""} onClick={() => handleBoard(resp)} >
+                                    <img onClick={() => openEditBoard(resp)} src={board == resp.name ? boardLightImg : boardImg} alt='icone board' />
+                                    {resp.name}
+                                </Styled.Li>
+                            )}
                         
 
 

@@ -80,16 +80,12 @@ export const ContentAdd = styled.form<IProps>`
 
     button {
         padding: 9px;
-        /* margin-top: 20px; */
 
         border: none;
         border-radius: 20px;
 
         font-weight: 700;
 
-        /* &:nth-child(6) {
-            margin-top: 20px;
-        } */
     }
 
 

@@ -123,7 +123,7 @@ export default function AddBoard({ closeBoard }: {closeBoard: FC}) {
                 <Input type="text" value={nameColumn} onChange={e  => setNameColumn(e.target.value)} placeholder='Nome da coluna' />
             </label>
                 
-            <Button type='button' onClick={addColumn} light >+Add nova coluna</Button>
+            <Button type='button' onClick={addColumn} light mg={24} >+Add nova coluna</Button>
 
             <Button type='submit' >{loading ? <Spinner /> : "Criar board"}</Button>
 

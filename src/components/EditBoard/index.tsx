@@ -119,6 +119,7 @@ export default function EditBoard({ closeBoard, board }: IProps) {
             setListColumns(list);
             setNameColumn("");
         }
+
     }
 
     async function handleDeleteOptionColumn(index: number, id?: string) {
@@ -184,7 +185,7 @@ export default function EditBoard({ closeBoard, board }: IProps) {
                 <Input type="text" value={nameColumn} onChange={e => setNameColumn(e.target.value)} placeholder='Adicionar coluna' />
             </label>
             
-            <Button type='button' onClick={handleAddList} light >+Add nova coluna</Button>
+            <Button type='button' onClick={handleAddList} light mg={24} >+Add nova coluna</Button>
             <Button type='submit' >
                 {loading ? <Spinner /> : "Salvar alterações" }
             </Button>

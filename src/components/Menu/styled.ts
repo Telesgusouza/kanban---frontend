@@ -203,7 +203,7 @@ export const ImgClose = styled.div`
     }
 `;
 
-export const ContainerAdd = styled.div`
+export const ContainerToggle = styled.div`
     position: absolute;
     top: 0;
     left: 0;

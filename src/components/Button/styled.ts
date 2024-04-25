@@ -2,7 +2,10 @@ import styled, { css } from "styled-components";
 
 interface IProps {
     bglight: string;
-    light: string;
+    mg: number;
+    
+    light: boolean;
+    del: boolean;
 }
 
 export const Button = styled.button<IProps>`
@@ -18,21 +21,24 @@ export const Button = styled.button<IProps>`
 
     transition: opacity .1s ease;
 
+    margin-bottom: ${props => props.mg}px;
+
     &:hover {
         opacity: .8;
     }
 
-    ${ props => props.light === "light" && props.bglight === "light" && css`
+    ${ props => props.del && css`
 
-        background-color: rgba(99, 95, 199, .10);
-        color: rgba(99, 95, 199, 1);
-        margin-bottom: 24px;
+        background-color: #ea5555;
+        color: #ffffff;
+
     `}
 
-    ${ props => props.light === "light" && props.bglight === "dark" && css`
-        background-color: white;
+    ${ props => props.light && css`
+
+        background-color: ${props.bglight == "light" ? "rgba(99, 95, 199, .10)" : "rgba(255, 255, 255, 1)"};
         color: rgba(99, 95, 199, 1);
-        margin-bottom: 24px;
+        
     `}
 
 `;
