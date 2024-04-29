@@ -8,7 +8,7 @@ export default function RoutesApp() {
     return (
         <BrowserRouter>        
             <Routes>
-                <Route path="/registerAndLogin" element={ <RedirectRoute> <LoginRegister /> </RedirectRoute> } />
+                <Route path="/registerandlogin" element={ <RedirectRoute> <LoginRegister /> </RedirectRoute> } />
                 <Route path="/" element={ <RedirectRoute> <Home /> </RedirectRoute> } />
             </Routes>
         </BrowserRouter>

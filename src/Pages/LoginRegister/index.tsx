@@ -7,7 +7,8 @@ import axios, { AxiosError } from "axios";
 import base_url from "../../Config/BaseUrl";
 import { toast } from "react-toastify";
 import { DocumentData } from "../../Config/interface";
-
+import Spinner from "../../components/Spinner";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginRegister() {
 
@@ -15,24 +16,33 @@ export default function LoginRegister() {
     const [password, setPassword] = useState<string>("");
 
     const [togglePassword, setTogglePassword] = useState<boolean>(false);
-
     const [toggleForm, setToggleForm] = useState<boolean>(false);
+
+    const [loading, setLoading] = useState<boolean>(false);
+    const navigate = useNavigate();
+    
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
+        setLoading(true);
+
         try {
-        const urlFinal = toggleForm ? "register" : "login";
+            const urlFinal = toggleForm ? "register" : "login";
 
-        const token: DocumentData | null = await axios.post(base_url + "/api/v1/auth/" + urlFinal, {
-            login: email,
-            password: password
-        });
+            console.log("/api/v1/auth/" + urlFinal);
 
-        if (token) {
-            toast.success(`${toggleForm ? "registrado" : "logado"} com sucesso! `);
-            localStorage.setItem("authentication", JSON.stringify({token: token.data.token}))
-        }
+            const token: DocumentData | null = await axios.post(base_url + "/api/v1/auth/" + urlFinal, {
+                login: email,
+                password: password
+            });
+
+            if (token) {
+                toast.success(`${toggleForm ? "registrado" : "logado"} com sucesso! `);
+                localStorage.setItem("authentication", JSON.stringify({token: token.data.token}))
+            }
+
+            navigate("/", {replace: true});
 
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -51,6 +61,8 @@ export default function LoginRegister() {
                 }
 
             }
+        } finally {
+            setLoading(false);
         }
 
     }
@@ -77,7 +89,7 @@ export default function LoginRegister() {
                         </Styled.Password>
                     </Styled.Label>
 
-                    <button type="submit" > {toggleForm ? "Criar conta" : "Entrar"} </button>
+                    <button type="submit" > {loading ? <Spinner /> : (<>{toggleForm ? "Criar conta" : "Entrar"}</>)}  </button>
 
                 </form>
                 {toggleForm ? 

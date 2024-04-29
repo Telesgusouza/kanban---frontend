@@ -36,14 +36,13 @@ export const ContentMenu = styled.div<IProps>`
 
     justify-content: space-between;
 
-    width: 100%;
-    max-width: 300px;
+    width: 300px;
     min-height: 100vh;
 
     padding: 26px 26px 26px 0;
 
     background-color: ${props => props.theme};
-    box-shadow: 0 0 15px rgba(151,151,151, .3);
+    box-shadow: 0 0 10px rgba(151,151,151, .3);
 
     overflow: hidden;
 

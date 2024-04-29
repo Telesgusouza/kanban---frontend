@@ -27,63 +27,8 @@ import AddBoard from '../AddBoard';
 import EditBoard from '../EditBoard';
 import SectionDelete from '../SectionDelete';
 
+
 export default function Menu() {
-
-    /*
-    
-    parece ser um problema no backend
-    cors
-    @Configuration
-public class CorsConfig implements WebMvcConfigurer {
-
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedOrigins("*") // Ou especifique os domínios permitidos separados por vírgula
-				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH").allowedHeaders("*");
-	}
-
-    service
-    
-@Service
-public class BoardService {
-
-	@Autowired
-	private UserRepository repoUser;
-	@Autowired
-	private BoardRepository repoBoard;
-
-	public void delete(UUID id) {
-		
-		try {
-			this.repoBoard.deleteById(id);
-		} catch (RuntimeException e) {
-			throw new RuntimeException();
-		}
-	}
-
-}
-
-controller
-
-@RestController
-@RequestMapping("/api/v1/boards")
-public class BoardController {
-
-	@Autowired
-	private BoardService repo;
-
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteBoard(@PathVariable UUID id) {
-
-		repo.delete(id);
-
-		return ResponseEntity.noContent().build();
-	}
-
-
-
-    
-    */
 
     const { theme } = useSelector((rootReducer: IRootReducer) => rootReducer.useTheme);
     const dispatch = useDispatch();
@@ -103,7 +48,6 @@ public class BoardController {
             const auth = localStorage.getItem("authentication");
             if (auth) {
                 const token = JSON.parse(auth);
-                
 
                 const data = await axios.get(base_url + "/api/v1/boards", {
                     headers: {
@@ -117,6 +61,14 @@ public class BoardController {
                 setListBoard(data?.data.board);
 
                 setBoard(data?.data.board[0].name);
+
+                dispatch({
+                    type: ActionTypes.board,
+                    payload: {board: data?.data ? data?.data.board[0] : {
+                        id: "",
+                        name: ""
+                    }}
+                });
 
             }
 
@@ -134,6 +86,10 @@ public class BoardController {
         } else {
             setToggleDeleteBoard(false);
             setBoard(boardValue.name);
+            dispatch({
+                type: ActionTypes.board,
+                payload: {board: boardValue}
+            });
         }
 
 
@@ -161,6 +117,14 @@ public class BoardController {
     function deleteBoard() {
         setToggleEditBoard(false);
         setToggleDeleteBoard(true);
+    }
+
+    function handleVisibleMenu(toggle: boolean) {
+        setToggleMenu(toggle);
+        dispatch({
+            type: ActionTypes.visibleMenu,
+            payload: toggle
+        });
     }
 
     return (
@@ -242,7 +206,7 @@ public class BoardController {
                             <img src={darkImg} alt="icone de lua" />
                         </Styled.ContainerTheme>
 
-                        <Styled.ContainerHidden onClick={() => setToggleMenu(true)} >
+                        <Styled.ContainerHidden onClick={() => handleVisibleMenu(true)} >
                             <img src={noEyeImg} alt="icone de olho" />
                             Esconder menu
                         </Styled.ContainerHidden>
@@ -250,7 +214,7 @@ public class BoardController {
                     </div>
                 </Styled.ContentMenu>
 
-                <Styled.Visible togglemenu={!toggleMenu ? "visible" : ""} onClick={() => setToggleMenu(false)} >
+                <Styled.Visible togglemenu={!toggleMenu ? "visible" : ""} onClick={() => handleVisibleMenu(false)} >
                     <img src={eyeImg} alt="icone olho" />
                 </Styled.Visible>
 

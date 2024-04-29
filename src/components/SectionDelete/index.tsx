@@ -36,10 +36,10 @@ export default function SectionDelete({ closeBoard, board, task }: IProps) {
                 console.log(board.id)
 
                 await axios.delete(`${base_url}/api/v1/boards/${board.id}`, {
-                    headers:{
-                        'Authorization': `Bearer ${token}`,
+                    headers: {
+                        'Authorization': `Bearer ${token.token}`,
                         'Content-Type': 'application/json'
-                    }
+                     }
                 })
                 .then(() => {
                     toast.success("Board deletado com sucesso");
@@ -47,6 +47,7 @@ export default function SectionDelete({ closeBoard, board, task }: IProps) {
                 })
                 .catch(e => {
                     toast.error("Erro ao deletar board");
+                    console.error(e)
                 });
             }
 

@@ -1,11 +1,10 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 interface IProps {
-    bglight: string;
     mg: number;
     
-    light: boolean;
-    del: boolean;
+    light: string;
+    del: string;
 }
 
 export const Button = styled.button<IProps>`
@@ -27,18 +26,10 @@ export const Button = styled.button<IProps>`
         opacity: .8;
     }
 
-    ${ props => props.del && css`
+    ${props => props.del}
 
-        background-color: #ea5555;
-        color: #ffffff;
+    ${ props => props.light }
 
-    `}
-
-    ${ props => props.light && css`
-
-        background-color: ${props.bglight == "light" ? "rgba(99, 95, 199, .10)" : "rgba(255, 255, 255, 1)"};
-        color: rgba(99, 95, 199, 1);
-        
-    `}
+  
 
 `;

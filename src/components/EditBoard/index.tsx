@@ -9,10 +9,11 @@ import Button from '../Button';
 import axios from 'axios';
 import base_url from '../../Config/BaseUrl';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import themeJson from '../../assets/theme';
 import Spinner from '../Spinner';
+import ActionTypes from '../../Config/ActionTypes';
 
 interface IProps {
     closeBoard: FC,
@@ -35,6 +36,7 @@ export default function EditBoard({ closeBoard, board }: IProps) {
     const [loading, setLoading] = useState<boolean>(false);
 
     const { theme } = useSelector((rootReducer: IRootReducer) => rootReducer.useTheme);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         async function getColumns() {
@@ -84,6 +86,7 @@ export default function EditBoard({ closeBoard, board }: IProps) {
                 })
 
                 toast.success("Board atualizado com sucesso");
+                
             }
                     
             for (let i = 0; i <= listColumns.length-1; i++) {
@@ -99,6 +102,11 @@ export default function EditBoard({ closeBoard, board }: IProps) {
                     });
                 }
             }
+
+            dispatch({
+                type: ActionTypes.board,
+                payload: {board: board}
+            });
             
         }
 

@@ -1,3 +1,5 @@
 export default {
-    theme: "THEME"
+    theme: "THEME",
+    board: "BOARD",
+    visibleMenu: "VISIBLE_MENU",
 }

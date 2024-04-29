@@ -45,12 +45,33 @@ export interface IState {
   theme: boolean;
 }
 
+export interface IVisibleMenu {
+  visible: boolean;
+}
+
+export interface IActionVisibleMenu {
+  type: string;
+  payload: boolean;
+}
+
 export interface IActionTheme {
+  type: string;
+  payload: boolean;
+}
+
+export interface IActionBoard {
   type: string,
-  payload: boolean
+  payload: {board: IBoard}
 }
 
 export interface IRootReducer {
+
+  useBoard: {
+    board: {board: IBoard};
+
+    state: {board: IBoard};
+    action: IActionBoard;
+  }
 
   useTheme: {
     theme?: boolean;
@@ -58,9 +79,23 @@ export interface IRootReducer {
     state: IState;
     action: IActionTheme;
   }
+
+  useVisibleMenu: {
+    visible?: boolean;
+
+    state: IVisibleMenu;
+    action: IActionVisibleMenu;
+  }
 }
 
 export interface IBoard {
   id: string;
   name: string;
+}
+
+export interface IColumn {
+  id: string,
+  cor: string,
+  name: string,
+  tasks: []
 }
