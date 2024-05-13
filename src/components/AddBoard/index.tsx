@@ -18,7 +18,7 @@ import OptionLi from '../OptionLi';
 import Spinner from '../Spinner';
 
 
-export default function AddBoard({ closeBoard }: {closeBoard: FC}) {
+export default function AddBoard({ closeBoard }: { closeBoard: FC }) {
 
     const [name, setName] = useState<string>("");
 
@@ -39,7 +39,7 @@ export default function AddBoard({ closeBoard }: {closeBoard: FC}) {
             const token = JSON.parse(auth).token;
 
             const data = await axios.post(base_url + "/api/v1/boards", { name: name }, {
-                headers:{
+                headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
@@ -50,10 +50,10 @@ export default function AddBoard({ closeBoard }: {closeBoard: FC}) {
                 setLoading(false);
             })
 
-            for (let i = 0; i <= listColumns.length - 1 ; i++) {
+            for (let i = 0; i <= listColumns.length - 1; i++) {
                 console.log("i > " + listColumns[i])
                 await axios.post(base_url + "/api/v1/columns/" + data?.data.id, { name: listColumns[i], cor: "#d3d3d3" }, {
-                    headers:{
+                    headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     }
@@ -67,7 +67,7 @@ export default function AddBoard({ closeBoard }: {closeBoard: FC}) {
             setLoading(false);
             toast.success("Board criado com sucesso");
             closeBoard({});
-            
+
         } else {
             toast.warn("Preencha o campo nome");
             setLoading(false);
@@ -79,7 +79,7 @@ export default function AddBoard({ closeBoard }: {closeBoard: FC}) {
         if (nameColumn.trim().length > 0) {
             const list: string[] = [...listColumns];
             list.push(nameColumn);
-    
+
             setListColumns(list);
             setNameColumn("");
         }
@@ -93,24 +93,31 @@ export default function AddBoard({ closeBoard }: {closeBoard: FC}) {
     }
 
     return (
-        <Styled.ContentAdd onSubmit={handleCreateBoard} cl={theme ? themeJson.black : themeJson.white } bg={theme ?  themeJson.white : themeJson.darkGray } >
+        <Styled.ContainerToggle>
+            <Styled.ContainerButton>
+                <Styled.ImgClose>
+                    <img src={closeImg} alt="fechar" onClick={() => closeBoard({})} />
+                </Styled.ImgClose>
+            </Styled.ContainerButton>
 
-            <strong>Add novo board</strong>
+            <Styled.ContentAdd onSubmit={handleCreateBoard} cl={theme ? themeJson.black : themeJson.white} bg={theme ? themeJson.white : themeJson.darkGray} >
 
-            <label htmlFor="name">
-                <span>Nome</span>
-                <Input type="text" value={name} onChange={e => setName(e.target.value)} placeholder='Nome do board' />
-            </label>
+                <strong>Add novo board</strong>
+
+                <label htmlFor="name">
+                    <span>Nome</span>
+                    <Input type="text" value={name} onChange={e => setName(e.target.value)} placeholder='Nome do board' />
+                </label>
 
 
                 {listColumns.length > 0 && (<>
                     <span>Colunas</span>
 
-                    <ul>    
+                    <ul>
                         {listColumns.map((resp, index) => (<>
                             <li key={resp} onClick={() => deleteColumn(index)} >
                                 <OptionLi>
-                                {resp}
+                                    {resp}
                                 </OptionLi>
                                 <img src={closeImg} alt="" />
                             </li>
@@ -118,15 +125,16 @@ export default function AddBoard({ closeBoard }: {closeBoard: FC}) {
                     </ul>
                 </>)}
 
-            <label htmlFor="name" style={{ marginTop: 20 }} >
-                <span>Nome da coluna </span>
-                <Input type="text" value={nameColumn} onChange={e  => setNameColumn(e.target.value)} placeholder='Nome da coluna' />
-            </label>
-                
-            <Button type='button' onClick={addColumn} light mg={24} >+Add nova coluna</Button>
+                <label htmlFor="name" style={{ marginTop: 20 }} >
+                    <span>Nome da coluna </span>
+                    <Input type="text" value={nameColumn} onChange={e => setNameColumn(e.target.value)} placeholder='Nome da coluna' />
+                </label>
 
-            <Button type='submit' >{loading ? <Spinner /> : "Criar board"}</Button>
+                <Button type='button' onClick={addColumn} light mg={24} >+Add nova coluna</Button>
 
-        </Styled.ContentAdd>
+                <Button type='submit' >{loading ? <Spinner /> : "Criar board"}</Button>
+
+            </Styled.ContentAdd>
+        </Styled.ContainerToggle>
     )
 }

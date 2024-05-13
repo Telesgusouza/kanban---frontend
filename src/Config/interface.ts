@@ -1,44 +1,44 @@
 
 export interface DocumentData {
-    data: {
-      token: string;
+  data: {
+    token: string;
+  };
+  status: number;
+  statusText: string;
+  headers: {
+    [key: string]: string;
+  };
+  config: {
+    transitional: {
+      silentJSONParsing: boolean;
+      forcedJSONParsing: boolean;
+      clarifyTimeoutError: boolean;
     };
-    status: number;
-    statusText: string;
-    headers: {
+    adapter: string[];
+    transformRequest: [];
+    transformResponse: [];
+    timeout: number;
+    xsrfCookieName: string;
+    xsrfHeaderName: string;
+    maxContentLength: number;
+    maxBodyLength: number;
+    env: {
       [key: string]: string;
     };
-    config: {
-      transitional: {
-        silentJSONParsing: boolean;
-        forcedJSONParsing: boolean;
-        clarifyTimeoutError: boolean;
-      };
-      adapter: string[];
-      transformRequest: [];
-      transformResponse: [];
-      timeout: number;
-      xsrfCookieName: string;
-      xsrfHeaderName: string;
-      maxContentLength: number;
-      maxBodyLength: number;
-      env: {
-        [key: string]: string;
-      };
-      headers: {
-        Accept: string;
-        'Content-Type': string;
-        [key: string]: string;
-      };
-      method: string;
-      url: string;
-      data: string;
+    headers: {
+      Accept: string;
+      'Content-Type': string;
+      [key: string]: string;
     };
-    request: string;
-  }
-  
+    method: string;
+    url: string;
+    data: string;
+  };
+  request: string;
+}
+
 export interface IToken {
-    token: string;
+  token: string;
 }
 
 export interface IState {
@@ -61,15 +61,22 @@ export interface IActionTheme {
 
 export interface IActionBoard {
   type: string,
-  payload: {board: IBoard}
+  payload: { board: IBoard }
 }
 
 export interface IRootReducer {
 
-  useBoard: {
-    board: {board: IBoard};
+  useCard: {
+    card: "del" | "edit" | "void";
 
-    state: {board: IBoard};
+    state: ICardTask;
+    action: IActionCardTask;
+  }
+
+  useBoard: {
+    board: { board: IBoard };
+
+    state: { board: IBoard };
     action: IActionBoard;
   }
 
@@ -97,5 +104,30 @@ export interface IColumn {
   id: string,
   cor: string,
   name: string,
-  tasks: []
+  tasks: ITask[]
+}
+
+export interface ISubTask {
+  id: string;
+  checkbox: boolean;
+  title: string;
+}
+
+export interface ITask {
+  id?: string;
+  title: string,
+  description: string,
+  subtasks?: ISubTask[]
+
+  pending?: number;
+  feats?: number;
+}
+
+export interface ICardTask {
+  card: "del" | "edit" | "void";
+}
+
+export interface IActionCardTask {
+  type: string,
+  payload: ICardTask
 }

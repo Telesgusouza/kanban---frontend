@@ -64,10 +64,12 @@ export default function Menu() {
 
                 dispatch({
                     type: ActionTypes.board,
-                    payload: {board: data?.data ? data?.data.board[0] : {
-                        id: "",
-                        name: ""
-                    }}
+                    payload: {
+                        board: data?.data ? data?.data.board[0] : {
+                            id: "",
+                            name: ""
+                        }
+                    }
                 });
 
             }
@@ -79,16 +81,16 @@ export default function Menu() {
     }, [])
 
     async function handleBoard(boardValue: IBoard) {
-        
+
         if (board === boardValue.name) {
             setToggleEditBoard(false);
-            openEditBoard(boardValue); 
+            openEditBoard(boardValue);
         } else {
             setToggleDeleteBoard(false);
             setBoard(boardValue.name);
             dispatch({
                 type: ActionTypes.board,
-                payload: {board: boardValue}
+                payload: { board: boardValue }
             });
         }
 
@@ -130,63 +132,53 @@ export default function Menu() {
     return (
         <>
             {toggleAdd && (
-                <Styled.ContainerToggle>
-                    <Styled.ContainerButton>
-                        <Styled.ImgClose> 
-                            <img src={closeImg} alt="fechar" onClick={() => closeBoard()} />
-                        </Styled.ImgClose>
-                    </Styled.ContainerButton>
-                    
+                <>
                     <AddBoard closeBoard={() => closeBoard()} />
-
-                </Styled.ContainerToggle>
+                </>
             )}
-        
-            { toggleEditBoard && currentBoard && (
+
+            {toggleEditBoard && currentBoard && (
                 <Styled.ContainerToggle>
 
                     <Styled.ContainerButton>
                         <Styled.ButtonClose onClick={deleteBoard} > apagar board </Styled.ButtonClose>
-                    
-                        <Styled.ImgClose> 
+
+                        <Styled.ImgClose>
                             <img src={closeImg} alt="fechar" onClick={() => closeBoard()} />
                         </Styled.ImgClose>
-                    
+
                     </Styled.ContainerButton>
-                                
+
                     <EditBoard closeBoard={() => closeBoard()} board={currentBoard} />
-            
+
                 </Styled.ContainerToggle>
             )}
 
             {toggleDeleteBoard && currentBoard && (
-                <Styled.ContainerToggle>
-                    <Styled.ContainerButton>
-                        <Styled.ImgClose> 
-                            <img src={closeImg} alt="fechar" onClick={() => closeBoard()} />
-                        </Styled.ImgClose>
-                    </Styled.ContainerButton>
-
-                    <SectionDelete closeBoard={() => closeBoard()} board={currentBoard} />
-                </Styled.ContainerToggle>
+                <SectionDelete closeBoard={() => closeBoard()} board={currentBoard} />
             )}
 
             <Styled.Container>
-                <Styled.ContentMenu theme={theme ? themeJson.white : themeJson.darkGray } togglemenu={toggleMenu ? "visible" : ""} >
+                <Styled.ContentMenu theme={theme ? themeJson.white : themeJson.darkGray} togglemenu={toggleMenu ? "visible" : ""} >
                     <Styled.Content>
 
-                        <Styled.Icone src={theme ? logoImg : logoDarkImg } alt="Icone" />
+                        <Styled.Icone src={theme ? logoImg : logoDarkImg} alt="Icone" />
 
                         <strong>Todos boards ({listBoard.length})</strong>
 
                         <ul>
-                            {listBoard.length > 0 && listBoard.map(resp => 
-                                <Styled.Li key={resp.id} option={board == resp.name ? "select" : ""} onClick={() => handleBoard(resp)} >
+                            {listBoard.length > 0 && listBoard.map(resp =>
+                                <Styled.Li 
+                                    key={resp.id} 
+                                    option={board == resp.name ? "select" : ""} 
+                                    bghover={theme ? "rgba(151, 151, 151, .2)" : themeJson.white} 
+                                    onClick={() => handleBoard(resp)} >
+                                    
                                     <img onClick={() => openEditBoard(resp)} src={board == resp.name ? boardLightImg : boardImg} alt='icone board' />
                                     {resp.name}
                                 </Styled.Li>
                             )}
-                        
+
 
 
                             <Styled.Li optionadd={"select"} onClick={() => setToggleAdd(true)}  >
@@ -196,13 +188,13 @@ export default function Menu() {
                         </ul>
                     </Styled.Content>
 
-                    <div style={{paddingLeft: 26}} >
+                    <div style={{ paddingLeft: 26 }} >
 
                         <Styled.ContainerTheme theme={theme ? themeJson.lightGray : themeJson.veryDarkGray} >
                             <img src={sunImg} alt="icone de sol" />
 
                             <Styled.Theme onClick={handleTheme} theme={theme ? "3px" : "23px"} />
-                            
+
                             <img src={darkImg} alt="icone de lua" />
                         </Styled.ContainerTheme>
 
@@ -210,7 +202,7 @@ export default function Menu() {
                             <img src={noEyeImg} alt="icone de olho" />
                             Esconder menu
                         </Styled.ContainerHidden>
-                    
+
                     </div>
                 </Styled.ContentMenu>
 

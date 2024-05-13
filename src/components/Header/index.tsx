@@ -5,7 +5,6 @@ import axios from 'axios';
 import * as Styled from './styled';
 
 import Button from '../Button';
-import closeImg from '../../assets/icons/icon-cross.svg';
 
 import { IColumn, IRootReducer } from '../../Config/interface';
 import themeJson from '../../assets/theme';
@@ -19,11 +18,13 @@ export default function Header() {
     const { board } = useSelector((rootReducer: IRootReducer) => rootReducer.useBoard);
 
     const [columns, setColumns] = useState<IColumn[]>([]);
-    const [toggleAddTask, setToggleAddTask] = useState<boolean>(true);
+    const [toggleAddTask, setToggleAddTask] = useState<boolean>(false);
+
+    const [toggleBoardEdit, setToggleBoardEdit] = useState<boolean>(false);
 
     useEffect(() => {
 
-        async function  getData() {
+        async function getData() {
             const auth = localStorage.getItem("authentication");
 
             if (auth && board) {
@@ -54,30 +55,29 @@ export default function Header() {
 
     return (
         <Styled.Container bg={theme ? themeJson.white : themeJson.darkGray} cl={theme ? themeJson.black : themeJson.white} >
-            
+
             {toggleAddTask && (
-                <Styled.ContainerPopUp>
-
-                    <Styled.ContainerButton>
-                        <img src={closeImg} alt="fechar janela" onClick={closeTask} />
-                    </Styled.ContainerButton>
-
-
+                <>
                     <FormTask edit={false} closeTask={() => closeTask()} />
-
-                </Styled.ContainerPopUp>
+                </>
             )}
-            
+
             <h2>{board.board ? board.board.name : ""}</h2>
 
             <Styled.ContainerRight opbutton={columns.length > 0 ? "1" : ".4"}  >
                 <Button onClick={() => setToggleAddTask(true)} >+Add nova tarefa</Button>
 
-                <div>
+                <div onClick={() => setToggleBoardEdit(!toggleBoardEdit)} >
                     <span></span>
                     <span></span>
                     <span></span>
                 </div>
+
+                {toggleBoardEdit && (
+                    <>
+                    
+                    </>
+                )}
             </Styled.ContainerRight>
         </Styled.Container>
     )

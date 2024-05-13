@@ -5,6 +5,8 @@ interface IProps {
     optionadd?: string;
     togglemenu?: string;
     theme?: string;
+
+    bghover?: string;
 }
 
 interface ITheme {
@@ -105,6 +107,9 @@ export const Li = styled.li<IProps>`
     overflow: hidden;
     text-overflow: ellipsis;
 
+    transition: background-color .1s ease;
+    transition: color .1s ease;
+
     cursor: pointer;
 
     ${props => props.option === "select" && css`
@@ -118,6 +123,11 @@ export const Li = styled.li<IProps>`
 
     img {
         margin-right: 14px;
+    }
+
+    &:hover {
+        background-color: ${props => props.bghover};
+        color: #635fc7;
     }
 
 `;

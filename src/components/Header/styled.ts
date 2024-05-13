@@ -59,38 +59,3 @@ export const ContainerRight = styled.div<ICRight>`
         background-color: #828fa3;
     }
 `;
-
-export const ContainerPopUp = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 999;
-
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    background-color: rgba(0, 0, 0, .3);
-`;
-
-export const ContainerButton = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: end;
-
-    width: 100%;
-    max-width: 480px;
-
-    margin-bottom: 14px;
-
-    img {
-        width: 15px;
-
-        cursor: pointer;
-    }
-`;
