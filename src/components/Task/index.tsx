@@ -135,12 +135,6 @@ export default function Task({ idtask, columns, currentColumn }: IProps) {
     return null;
   }
 
-  function handleToggleCard() {
-
-    setToggleCard(!toggleCard);
-    return null;
-  }
-
   return (
     <Styled.Container bg={theme ? themeJson.white : themeJson.darkGray} cl={theme ? "black" : "white"} clspan={theme ? themeJson.mediumGray : themeJson.white} >
 
@@ -158,7 +152,7 @@ export default function Task({ idtask, columns, currentColumn }: IProps) {
         <Styled.ContainerCard>
           {toggleCard && (
             <>
-              <CardOptionTask task={taskCurrent} onSelect={handleToggleCard} />
+              <CardOptionTask />
             </>
           )}
 

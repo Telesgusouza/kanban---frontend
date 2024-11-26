@@ -23,6 +23,8 @@ export default function RedirectRoute({children}: IProps) {
                 const token: IToken = JSON.parse(auth);
 
                 if (token?.token == "" || auth === null) {
+
+                    alert("deveria chegar aqui")
                     
                     navigate("/registerandlogin", {replace: true});
                     
@@ -39,6 +41,10 @@ export default function RedirectRoute({children}: IProps) {
                     })
                     
                 }
+            } else {
+                    
+                navigate("/registerandlogin", {replace: true});
+                
             }
 
 

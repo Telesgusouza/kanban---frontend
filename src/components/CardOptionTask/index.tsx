@@ -1,16 +1,11 @@
-import { IRootReducer, ITask } from '../../Config/interface';
+import { IRootReducer } from '../../Config/interface';
 import * as Styled from './styled';
 
 import themeJson from '../../assets/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import ActionTypes from '../../Config/ActionTypes';
 
-interface IProps {
-    task: ITask;
-    onSelect: (option: "del" | "edit" | "void") => void;
-}
-
-export default function CardOptionTask({ task, onSelect }: IProps) {
+export default function CardOptionTask() {
 
     const { theme } = useSelector((rootReducer: IRootReducer) => rootReducer.useTheme);
 
